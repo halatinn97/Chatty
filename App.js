@@ -19,10 +19,10 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Start"
+          initialRouteName="Home"
         >
           <Stack.Screen
-            name="Start"
+            name="Home"
             component={Start}
           />
           <Stack.Screen

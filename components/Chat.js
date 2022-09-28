@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import 'react-native-gesture-handler';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble } from 'react-native-gifted-chat'
 
 
 export default class Chat extends React.Component {
@@ -13,6 +13,9 @@ export default class Chat extends React.Component {
     }
 
     componentDidMount() {
+
+        let { name } = this.props.route.params;
+        this.props.navigation.setOptions({ title: name });
 
         this.setState({
             messages: [
@@ -41,15 +44,22 @@ export default class Chat extends React.Component {
         }))
     }
 
+    renderBubble(props) {
+        return (
+            <Bubble
+                {...props}
+                wrapperStyle={styles.bubble}
+            />
+        )
+    }
+
     render() {
         const { color } = this.props.route.params;
-
-        let { name } = this.props.route.params;
-        this.props.navigation.setOptions({ title: name });
 
         return (
             <View style={[{ backgroundColor: color }, styles.container]}>
                 <GiftedChat
+                    renderBubble={this.renderBubble.bind(this)}
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
@@ -68,5 +78,13 @@ const styles = StyleSheet.create({
     },
     chatTitle: {
         color: '#FFFFFF'
+    },
+    bubble: {
+        left: {
+            backgroundColor: '#B9C6AE',
+        },
+        right: {
+            backgroundColor: 'blue'
+        }
     }
 })

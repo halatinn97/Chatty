@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     bubble: {
         left: {
-            backgroundColor: '#B9C6AE',
+            backgroundColor: 'white',
         },
         right: {
             backgroundColor: 'blue'

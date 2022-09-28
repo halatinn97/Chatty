@@ -16,12 +16,14 @@ export default class Start extends React.Component {
                 <View style={styles.container}>
                     <Text style={styles.appTitle}>Chatty</Text>
                     <View style={styles.startBox}>
+                        {/*Allow user to input name to display in chat*/}
                         <TextInput
                             style={styles.nameInput}
                             onChangeText={(name) => this.setState({ name })}
                             value={this.state.name}
                             placeholder='Your Name'
                         />
+                        {/*Allow user to pick background color on touch*/}
                         <View style={styles.colorWrapper}>
                             <Text style={[styles.chooseBackgroundPrompt, styles.label]}>Choose Background Color:</Text>
                             <View style={styles.colors}>
@@ -31,6 +33,7 @@ export default class Start extends React.Component {
                                 <TouchableOpacity style={[styles.color, styles.green]} onPress={() => this.setState({ color: '#B9C6AE' })} />
                             </View>
                         </View>
+                        {/*Allow user to enter chat*/}
                         <View style={styles.buttonWrapper}>
                             <TouchableOpacity style={styles.startChatButton} onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, color: this.state.color })}>
                                 <Text style={styles.buttonText}>Start Chatting</Text>

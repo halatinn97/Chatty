@@ -14,9 +14,11 @@ export default class Chat extends React.Component {
 
     componentDidMount() {
 
+        //Display username in navigation
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
+        //Set up chat messages with given data
         this.setState({
             messages: [
                 {
@@ -38,12 +40,15 @@ export default class Chat extends React.Component {
             ],
         })
     }
+
+    //Appends new message to previous  
     onSend(messages = []) {
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }))
     }
 
+    //Allows bubble customization   
     renderBubble(props) {
         return (
             <Bubble
@@ -66,6 +71,7 @@ export default class Chat extends React.Component {
                         _id: 1,
                     }}
                 />
+                {/*Prevent hidden input field on Android*/}
                 {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
             </View>
         );

@@ -31,7 +31,7 @@ export default class Chat extends React.Component {
                 },
                 {
                     _id: 2,
-                    text: 'This is a sytem message',
+                    text: 'Messages not saved in current mode',
                     createdAt: new Date(),
                     system: true
                 }

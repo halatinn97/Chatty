@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import 'react-native-gesture-handler';
 import { GiftedChat } from 'react-native-gifted-chat'
 
@@ -56,6 +56,7 @@ export default class Chat extends React.Component {
                         _id: 1,
                     }}
                 />
+                {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
             </View>
         );
     };

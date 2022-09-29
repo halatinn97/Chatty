@@ -15,7 +15,12 @@ export default class Chat extends React.Component {
         this.state = {
             messages: [],
             uid: 0,
-        }
+            user: {
+                _id: '',
+                avatar: '',
+                name: '',
+            }
+        };
 
         const firebaseConfig = {
             apiKey: "AIzaSyA-nx6HuctS1D61E_muRJrCYpZ0PnwZwN8",
@@ -35,6 +40,28 @@ export default class Chat extends React.Component {
         this.referenceChatMessages = firebase.firestore().collection('messages');
     }
 
+    onCollectionUpdate = (querySnapshot) => {
+        const messages = [];
+        // go through each document
+        querySnapshot.forEach((doc) => {
+            // get the QueryDocumentSnapshot's data
+            let data = doc.data();
+            messages.push({
+                _id: data._id,
+                text: data.text,
+                createdAt: data.createdAt.toDate(),
+                user: {
+                    _id: data.user._id,
+                    name: data.user.name,
+                    avatar: data.user.avatar || '',
+                },
+            });
+        });
+        this.setState({
+            messages,
+        });
+    };
+
 
     componentDidMount() {
 
@@ -52,6 +79,10 @@ export default class Chat extends React.Component {
             this.setState({
                 uid: user.uid,
                 messages: [],
+                user: {
+                    _id: user.uid,
+                    name: name,
+                },
             });
             this.unsubscribe = this.referenceChatMessages
                 .orderBy('createdAt', 'desc')
@@ -64,40 +95,24 @@ export default class Chat extends React.Component {
         this.authUnsubscribe();
     }
 
-    onCollectionUpdate = (querySnapshot) => {
-        const messages = [];
-        // go through each document
-        querySnapshot.forEach((doc) => {
-            // get the QueryDocumentSnapshot's data
-            let data = doc.data();
-            messages.push({
-                _id: data._id,
-                text: data.text,
-                createdAt: data.createdAt.toDate(),
-                user: data.user,
-            });
-        });
-        this.setState({
-            messages,
-        });
-    };
-
-    addMessages = (message) => {
-
-        this.referenceChatMessages.add({
-            _id: message._id,
-            text: message.text,
-            createdAt: message.createdAt,
-            user: message.user,
-        });
-    }
 
     //Appends new message to previous  
     onSend(messages = []) {
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }), () => {
-            this.addMessages();
+            this.addMessages(this.state.messages[0]);
+        });
+    }
+
+    addMessages = (message) => {
+
+        this.referenceChatMessages.add({
+            uid: this.state.uid,
+            _id: message._id,
+            text: message.text,
+            createdAt: message.createdAt,
+            user: message.user,
         });
     }
 
@@ -112,7 +127,7 @@ export default class Chat extends React.Component {
     }
 
     render() {
-        const { color } = this.props.route.params;
+        const { color, name } = this.props.route.params;
 
         return (
             <View style={[{ backgroundColor: color }, styles.container]}>
@@ -121,9 +136,8 @@ export default class Chat extends React.Component {
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
-                        _id: this.state.uid,
-                        name: this.state.name,
-                        avatar: this.state.avatar,
+                        _id: this.state.user._id,
+                        name: name,
                     }}
                 />
                 {/*Prevent hidden input field on Android*/}

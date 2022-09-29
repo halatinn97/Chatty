@@ -1,12 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import 'react-native-gesture-handler';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat'
-// Import the functions you need from the SDKs you need
 
+// Import functions from SDKs
 const firebase = require('firebase');
 require('firebase/firestore')
-
 
 
 export default class Chat extends React.Component {
@@ -22,6 +21,7 @@ export default class Chat extends React.Component {
             }
         };
 
+        //Set up Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA-nx6HuctS1D61E_muRJrCYpZ0PnwZwN8",
             authDomain: "chatty-a7d2d.firebaseapp.com",
@@ -32,7 +32,6 @@ export default class Chat extends React.Component {
             measurementId: "G-JN0C41084N"
         };
 
-        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
@@ -40,11 +39,12 @@ export default class Chat extends React.Component {
         this.referenceChatMessages = firebase.firestore().collection('messages');
     }
 
+    //Retrieve collection data & store in messages
     onCollectionUpdate = (querySnapshot) => {
         const messages = [];
-        // go through each document
+        // Go through each document
         querySnapshot.forEach((doc) => {
-            // get the QueryDocumentSnapshot's data
+            // Get QueryDocumentSnapshot's data
             let data = doc.data();
             messages.push({
                 _id: data._id,
@@ -53,7 +53,7 @@ export default class Chat extends React.Component {
                 user: {
                     _id: data.user._id,
                     name: data.user.name,
-                    avatar: data.user.avatar || '',
+                    avatar: data.user.avatar,
                 },
             });
         });
@@ -69,6 +69,7 @@ export default class Chat extends React.Component {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
+        //Anonymous user authentication 
         this.referenceChatMessages = firebase.firestore().collection('messages');
 
 
@@ -105,6 +106,7 @@ export default class Chat extends React.Component {
         });
     }
 
+    //Save messages to database
     addMessages = (message) => {
 
         this.referenceChatMessages.add({

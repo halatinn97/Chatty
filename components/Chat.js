@@ -2,6 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import 'react-native-gesture-handler';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+// Import the functions you need from the SDKs you need
+
+const firebase = require('firebase');
+require('firebase/firestore')
+
 
 
 export default class Chat extends React.Component {
@@ -9,8 +14,27 @@ export default class Chat extends React.Component {
         super();
         this.state = {
             messages: [],
+            uid: 0,
         }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-nx6HuctS1D61E_muRJrCYpZ0PnwZwN8",
+            authDomain: "chatty-a7d2d.firebaseapp.com",
+            projectId: "chatty-a7d2d",
+            storageBucket: "chatty-a7d2d.appspot.com",
+            messagingSenderId: "305480742013",
+            appId: "1:305480742013:web:f915fb2d7458bdb7b86d14",
+            measurementId: "G-JN0C41084N"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        this.referenceChatMessages = firebase.firestore().collection('messages');
     }
+
 
     componentDidMount() {
 
@@ -18,34 +42,63 @@ export default class Chat extends React.Component {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
-        //Set up chat messages with given data
+        this.referenceChatMessages = firebase.firestore().collection('messages');
+
+
+        this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                firebase.auth().signInAnonymously();
+            }
+            this.setState({
+                uid: user.uid,
+                messages: [],
+            });
+            this.unsubscribe = this.referenceChatMessages
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(this.onCollectionUpdate);
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+        this.authUnsubscribe();
+    }
+
+    onCollectionUpdate = (querySnapshot) => {
+        const messages = [];
+        // go through each document
+        querySnapshot.forEach((doc) => {
+            // get the QueryDocumentSnapshot's data
+            let data = doc.data();
+            messages.push({
+                _id: data._id,
+                text: data.text,
+                createdAt: data.createdAt.toDate(),
+                user: data.user,
+            });
+        });
         this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-                {
-                    _id: 2,
-                    text: 'Messages not saved in current mode',
-                    createdAt: new Date(),
-                    system: true
-                }
-            ],
-        })
+            messages,
+        });
+    };
+
+    addMessages = (message) => {
+
+        this.referenceChatMessages.add({
+            _id: message._id,
+            text: message.text,
+            createdAt: message.createdAt,
+            user: message.user,
+        });
     }
 
     //Appends new message to previous  
     onSend(messages = []) {
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
-        }))
+        }), () => {
+            this.addMessages();
+        });
     }
 
     //Allows bubble customization   
@@ -68,7 +121,9 @@ export default class Chat extends React.Component {
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
-                        _id: 1,
+                        _id: this.state.uid,
+                        name: this.state.name,
+                        avatar: this.state.avatar,
                     }}
                 />
                 {/*Prevent hidden input field on Android*/}

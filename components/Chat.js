@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import 'react-native-gesture-handler';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from '@react-native-community/netinfo';
 
@@ -180,6 +180,18 @@ export default class Chat extends React.Component {
         )
     }
 
+    //Hides input when offline
+    renderInputToolbar(props) {
+        if (this.state.isConnected == false) {
+        } else {
+            return (
+                <InputToolbar
+                    {...props}
+                />
+            );
+        }
+    }
+
 
     render() {
         const { color, name } = this.props.route.params;
@@ -188,6 +200,7 @@ export default class Chat extends React.Component {
             <View style={[{ backgroundColor: color }, styles.container]}>
                 <GiftedChat
                     renderBubble={this.renderBubble.bind(this)}
+                    renderInputToolbar={this.renderInputToolbar.bind(this)}
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{

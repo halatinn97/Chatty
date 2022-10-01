@@ -148,7 +148,8 @@ export default class Chat extends React.Component {
 
 
     //Save messages to database
-    addMessages = (message) => {
+    addMessages = () => {
+        const message = this.state.messages[0];
         this.referenceChatMessages.add({
             uid: this.state.uid,
             _id: message._id,

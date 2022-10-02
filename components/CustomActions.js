@@ -14,7 +14,7 @@ export default class CustomActions extends React.Component {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         try {
             if (status === 'granted') {
-                const result = await ImagePicker.launchImageLibraryAsync({
+                let result = await ImagePicker.launchImageLibraryAsync({
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 }).catch((error) => console.log(error));
                 if (!result.cancelled) {
@@ -32,7 +32,7 @@ export default class CustomActions extends React.Component {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         try {
             if (status === 'granted') {
-                const result = await ImagePicker.launchCameraAsync({
+                let result = await ImagePicker.launchCameraAsync({
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 }).catch((error) => console.log(error));
 
@@ -51,11 +51,8 @@ export default class CustomActions extends React.Component {
         try {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
-                const result = await Location.getCurrentPositionAsync(
-                    {}
-                ).catch((error) => console.log(error));
-                const longitude = JSON.stringify(result.coords.longitude);
-                const altitude = JSON.stringify(result.coords.latitude);
+                let result = await Location.getCurrentPositionAsync({})
+
                 if (result) {
                     this.props.onSend({
                         location: {

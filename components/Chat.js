@@ -5,7 +5,7 @@ import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import CustomActions from './CustomActions';
-import { MapView } from 'expo';
+import MapView from 'react-native-maps';
 
 // Import functions from SDKs
 const firebase = require('firebase');
@@ -55,12 +55,12 @@ export default class Chat extends React.Component {
             let data = doc.data();
             messages.push({
                 _id: data._id,
-                text: data.text,
+                text: data.text || '',
                 createdAt: data.createdAt.toDate(),
                 user: {
                     _id: data.user._id,
                     name: data.user.name,
-                    avatar: data.user.avatar,
+                    avatar: data.user.avatar || '',
                 },
                 image: data.image || null,
                 location: data.location || null,
@@ -150,6 +150,12 @@ export default class Chat extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        if (this.isConnected) {
+            this.unsubscribe();
+            this.authUnsubscribe();
+        }
+    }
 
 
     //Save messages to database
@@ -158,7 +164,7 @@ export default class Chat extends React.Component {
         this.referenceChatMessages.add({
             uid: this.state.uid,
             _id: message._id,
-            text: message.text,
+            text: message.text || '',
             createdAt: message.createdAt,
             user: message.user,
             image: message.image || null,
@@ -172,7 +178,7 @@ export default class Chat extends React.Component {
             messages: GiftedChat.append(previousState.messages, messages),
         }), () => {
             this.saveMessages();
-            this.addMessages();
+            this.addMessages(this.state.messages[0]);
             this.deleteMessages();
         });
     }

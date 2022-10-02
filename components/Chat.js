@@ -7,7 +7,6 @@ import NetInfo from '@react-native-community/netinfo';
 import CustomActions from './CustomActions';
 import { MapView } from 'expo';
 
-
 // Import functions from SDKs
 const firebase = require('firebase');
 require('firebase/firestore')
@@ -26,6 +25,7 @@ export default class Chat extends React.Component {
             },
             isConnected: false,
             image: null,
+            location: null
         };
 
         //Set up Firebase

@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import firebase from 'firebase';
-
+import 'firebase/firestore';
 
 export default class CustomActions extends React.Component {
 
     //Allow user to pick images from native library
     imagePicker = async () => {
-        const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         try {
             if (status === 'granted') {
                 const result = await ImagePicker.launchImageLibraryAsync({
@@ -29,10 +29,7 @@ export default class CustomActions extends React.Component {
 
     //Allow user to take pictures
     takePhoto = async () => {
-        const { status } = await Permissions.askAsync(
-            Permissions.CAMERA,
-            Permissions.MEDIA_LIBRARY
-        );
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
         try {
             if (status === 'granted') {
                 const result = await ImagePicker.launchCameraAsync({
@@ -52,7 +49,7 @@ export default class CustomActions extends React.Component {
     //Get user location using GPS
     getLocation = async () => {
         try {
-            const { status } = await Permissions.askAsync(Permissions.LOCATION_FOREGROUND);
+            const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
                 const result = await Location.getCurrentPositionAsync(
                     {}
@@ -110,7 +107,7 @@ export default class CustomActions extends React.Component {
             'Cancel',
         ];
         const cancelButtonIndex = options.length - 1;
-        this.context.actionSheet().showActionSheetWithOptions(
+        this.props.showActionSheetWithOptions(
             {
                 options,
                 cancelButtonIndex,
@@ -174,3 +171,5 @@ CustomActions.contextTypes = {
     actionSheet: PropTypes.func,
 };
 
+
+CustomActions = connectActionSheet(CustomActions);

@@ -1,5 +1,8 @@
 # Chatty
 
+<img width="300" src="https://user-images.githubusercontent.com/76042761/193648166-cd38cab9-5ac2-4fb6-ba34-c35d822df75b.PNG"> <img width="300" src="https://user-images.githubusercontent.com/76042761/193648565-8873b0e8-13d5-42ff-a1d8-0e4a8c7329e3.PNG">
+
+
 ### About
 My first native app using React Native displays a chat for mobile devices & will provide users with a chat interface, as well as options to share images and their location
 
@@ -22,5 +25,42 @@ My first native app using React Native displays a chat for mobile devices & will
 
 ### Dependencies
 
+    "@expo/react-native-action-sheet": "^3.13.0",
+    "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-community/netinfo": "9.3.0",
+    "@react-navigation/native": "^6.0.13",
+    "@react-navigation/stack": "^6.3.1",
+    "expo": "~46.0.13",
+    "expo-image-picker": "~13.3.1",
+    "expo-location": "~14.3.0",
+    "expo-permissions": "~13.2.0",
+    "expo-status-bar": "~1.4.0",
+    "firebase": "8.2.3",
+    "react": "18.0.0",
+    "react-native": "0.69.6",
+    "react-native-gesture-handler": "~2.5.0",
+    "react-native-gifted-chat": "^1.0.4",
+    "react-native-maps": "0.31.1",
+    "react-native-reanimated": "~2.9.1",
+    "react-native-safe-area-context": "4.3.1",
+    "react-native-screens": "~3.15.0",
+    "react-navigation": "^4.4.4"
 
-### How to run the project
+### How to run the project:
+
+You can use any Emulator or Simulator to run the app on your device. To test this app, I have used Expo Go on iOS. To test the app with Expo, follow the below steps:
+
+1) Clone repository: git clone https://github.com/halatinn97/Chatty.git
+
+2) Install Expo CLI as a global npm package: npm install --global expo-cli
+
+2) Install all dependecies: npm install
+
+3) Start project: expo start / npx expo start
+
+4) Launch the app on Expo
+
+
+
+

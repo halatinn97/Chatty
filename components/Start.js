@@ -12,7 +12,7 @@ export default class Start extends React.Component {
 
     render() {
         return (
-            <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+            <ImageBackground source={require('../assets/phone.jpg')} style={styles.backgroundImage}>
                 <View style={styles.container}>
                     <Text style={styles.appTitle}>Chatty</Text>
                     <View style={styles.startBox}>
@@ -47,93 +47,96 @@ export default class Start extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize: 10,
+
+    backgroundImage: {
         flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center'
+        width: '100%',
+        height: '100%',
+        marginTop: -100,
+    },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     appTitle: {
-        fontSize: 45,
-        fontWeight: '600',
-        color: '#FFFFFF',
-        alignItems: 'flex-start',
-        padding: '30%'
+        fontSize: 50,
+        fontWeight: '900',
+        color: '#de7264',
+        marginTop: 130,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
     },
     startBox: {
         backgroundColor: 'white',
         alignItems: 'center',
         width: '88%',
-        height: '44%',
-        padding: '5%',
-        marginTop: '28%',
+        height: '35%',
+        padding: 20,
+        marginTop: 180,
+        borderRadius: 10,
     },
     nameInput: {
         fontSize: 16,
         borderColor: 'gray',
         height: 50,
-        width: '88%',
+        width: '100%',
         borderWidth: 1,
         borderRadius: 9,
         fontWeight: '300',
         color: '#757083',
-        opacity: '50%',
-        padding: '1%',
+        opacity: 0.5,
+        padding: 10,
+        marginBottom: 20,
     },
     chooseBackgroundPrompt: {
         fontSize: 16,
         fontWeight: '300',
         color: '#757083',
-        opacity: '100%',
-        alignSelf: 'center'
+        opacity: 1,
+        marginBottom: 10,
     },
     colorWrapper: {
-        width: '88%',
-        height: '60%',
+        width: '100%',
         justifyContent: 'center',
-        marginLeft: '6%',
-    },
-    label: {
-        marginBottom: '8%',
+        alignItems: 'center',
     },
     colors: {
         flexDirection: 'row',
-        marginBottom: 1,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: 20,
     },
     color: {
-        borderRadius: '50%',
+        borderRadius: 22.5,
         width: 45,
         height: 45,
+        marginLeft: 10,
     },
     black: {
         backgroundColor: '#090C08',
     },
     lilac: {
-        backgroundColor: '#474056',
+        backgroundColor: '#c95618',
     },
     blue: {
-        backgroundColor: '#8A95A5',
+        backgroundColor: '#18b8c9',
     },
     green: {
-        backgroundColor: '#B9C6AE',
+        backgroundColor: '#8a9191',
     },
     startChatButton: {
-        backgroundColor: '#757083',
+        backgroundColor: '#3bad44',
         height: 50,
+        width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: '30%',
-    },
-    buttonWrapper: {
-        width: '88%',
-        justifyContent: 'end',
+        borderRadius: 30,
+        padding: 10,
     },
     buttonText: {
         fontSize: 16,
         fontWeight: '600',
-        color: '#FFFFFF'
-    }
+        color: '#FFFFFF',
+    },
 });

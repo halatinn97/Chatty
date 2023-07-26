@@ -28,9 +28,9 @@ export default class Start extends React.Component {
                             <Text style={[styles.chooseBackgroundPrompt, styles.label]}>Choose Background Color:</Text>
                             <View style={styles.colors}>
                                 <TouchableOpacity style={[styles.color, styles.black]} onPress={() => this.setState({ color: '#090C08' })} />
-                                <TouchableOpacity style={[styles.color, styles.lilac]} onPress={() => this.setState({ color: '#474056' })} />
+                                <TouchableOpacity style={[styles.color, styles.orange]} onPress={() => this.setState({ color: '#474056' })} />
                                 <TouchableOpacity style={[styles.color, styles.blue]} onPress={() => this.setState({ color: '#8A95A5' })} />
-                                <TouchableOpacity style={[styles.color, styles.green]} onPress={() => this.setState({ color: '#B9C6AE' })} />
+                                <TouchableOpacity style={[styles.color, styles.grey]} onPress={() => this.setState({ color: '#B9C6AE' })} />
                             </View>
                         </View>
                         {/*Allow user to enter chat*/}
@@ -116,23 +116,28 @@ const styles = StyleSheet.create({
     black: {
         backgroundColor: '#090C08',
     },
-    lilac: {
+    orange: {
         backgroundColor: '#c95618',
     },
     blue: {
         backgroundColor: '#18b8c9',
     },
-    green: {
+    grey: {
         backgroundColor: '#8a9191',
     },
     startChatButton: {
-        backgroundColor: '#3bad44',
+        backgroundColor: '#76bac4',
         height: 50,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30,
         padding: 10,
+        elevation: 5, //  Android shadow
+        shadowColor: '#000', // iOS shadow 
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
     },
     buttonText: {
         fontSize: 16,
